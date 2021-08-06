@@ -1,0 +1,58 @@
+html {
+  background-color: black;
+}
+
+#gameScreen {
+  border: 1px solid black;
+}
+canvas {
+  outline: white 1px solid;
+  background-color: black;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+h1 {
+  font-family: 'Press Start 2P', cursive;
+  color: #32A956;
+  font-size: 40px;
+  padding: 20px;
+  width: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+#title {
+  margin: auto;
+  font-size: 80px;
+  border: 1px solid #32A956;
+}
+
+h2 {
+  line-height: 40px;
+  font-family: 'Press Start 2P', cursive;
+  padding-bottom: 30px;
+  text-align: center;
+  color: #32A956;
+  width: 50%;
+  margin: auto;
+}
+
+#gamestats {
+  width: 1200px;
+  margin: auto;
+}
+
+#score {
+  width: fit-content;
+  float: left;
+  display: inline;
+}
+
+#level {
+  width: fit-content;
+  display: inline;
+  float: right;
+}
