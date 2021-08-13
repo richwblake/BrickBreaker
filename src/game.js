@@ -15,6 +15,7 @@ const GAMESTATE = {
 export default class Game {
   constructor(context) {
     this.context = context;
+    this.formIsShown = false;
     this.brickBuilder = new BrickBuilder(context);
     this.brickBuilder.createBricksForCurrentLevel();
     this.ball = new Ball(context, this.brickBuilder, this);
@@ -27,7 +28,7 @@ export default class Game {
   }
 
   handleClick() {
-    document.addEventListener('click', () => {
+    document.getElementById('gameScreen').addEventListener('click', () => {
       if (this.gameState === GAMESTATE.MENU) {
         this.playGame();
       } else if (this.gameState === GAMESTATE.GAMEOVER) {
@@ -98,24 +99,37 @@ export default class Game {
   }
 
   playGame() {
+    this.formIsShown = false;
     this.gameState = GAMESTATE.RUNNING;
   }
 
   checkForGameOver() {
     if (this.ball.bottom > this.context.canvas.height) {
+      if (!this.formIsShown) {
+        this.showSubmitForm();
+      }
       this.gameState = GAMESTATE.GAMEOVER;
+      
     }
   }
 
   checkForWin() {
     if (!this.brickBuilder.bricks.find(brick => !brick.isHit) && this.gameState != GAMESTATE.CREDITS) {
+      if (!this.formIsShown) {
+        this.showSubmitForm();
+      }
       this.gameState = GAMESTATE.WON;
+      
     }
   }
 
   checkForGameComplete() {
     if (!this.brickBuilder.bricks.find(brick => !brick.isHit) && this.brickBuilder.currentLevel === 3) {
+      if (!this.formIsShown) {
+        this.showSubmitForm();
+      }
       this.gameState = GAMESTATE.CREDITS;
+      
     }
   }
 
@@ -218,5 +232,90 @@ export default class Game {
     } else if (this.gameState === GAMESTATE.PAUSED) {
       this.gameState = GAMESTATE.RUNNING;
     }
+  }
+
+  showSubmitForm() {
+    this.formIsShown = true;
+    let scoreTable = document.getElementById('top-scores');
+    let form = document.createElement('form');
+    let label = document.createElement('label');
+    let input = document.createElement('input');
+    let btn = document.createElement('button');
+    let br = document.createElement('br');
+
+    label.innerText = "Submit 3 letter name hi-score!"
+    label.style.color = "#32A956"
+    form.id = "score-submit-form";
+    form.style.paddingBottom = '15px';
+    form.style.paddingTop = '15px';
+    form.style.border = '1px solid #32A956'
+    input.type = "text";
+    input.style.marginBottom = '10px'
+    input.style.marginTop = '10px';
+    btn.type = "submit";
+    btn.innerText = "Submit Score"
+    btn.style.fontSize = "large";
+
+    form.append(label);
+    form.append(input);
+    form.append(br);
+    form.append(btn);
+
+    scoreTable.append(form);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = e.target[0].value;
+      if (text.length !== 3 || text.toUpperCase() !== text) {
+        let warning = document.getElementById('name-warning');
+        if (!warning) {
+          let form = document.getElementById('score-submit-form');
+          let p = document.createElement('p');
+          p.id = "name-warning"
+          p.innerText = "Name must be 3 letters, and all caps";
+          p.style.color = '#32A956';
+          form.append(p);
+        }
+      } else {
+        let body = {
+          user: {
+            name: e.target[0].value,
+            score: Number(document.getElementById('score').innerText.split(' ')[1])
+          }
+        }
+        let config = {
+          method: "POST",
+          headers: {
+            "Content-Type": "Application/json"
+          },
+          body: JSON.stringify(body)
+        }
+
+        fetch('https://blooming-beach-89055.herokuapp.com/users', config)
+        .then(resp => resp.json())
+        .then(json => this.fetchHighScores())
+        form.remove();
+      }
+    });
+  }
+
+  fetchHighScores() {
+    let table = document.getElementById('score-table');
+    
+    while (table.firstChild) {
+      table.removeChild(table.firstChild);
+    }
+  
+    fetch('https://blooming-beach-89055.herokuapp.com/users')
+    .then(resp => resp.json())
+    .then(json => json.forEach(user => {
+      let tr = document.createElement("tr");
+      let td1 = document.createElement("td");
+      let td2 = document.createElement("td");
+      td1.innerText = user.name;
+      td2.innerText = user.score
+      tr.append(td1, td2);
+      table.append(tr);
+    }))
   }
 }

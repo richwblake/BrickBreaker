@@ -1,5 +1,6 @@
 html {
   background-color: black;
+  font-family: 'Press Start 2P', cursive;
 }
 
 #gameScreen {
@@ -12,8 +13,44 @@ canvas {
   padding-right: 0;
   margin-left: auto;
   margin-right: auto;
-  display: block;
 }
+
+#game-and-score {
+  display: flex;
+  width: 70%;
+  margin: auto;
+}
+#top-scores {
+  width: 50%;
+  margin: 0;
+}
+
+#score-table {
+  width: 50%;
+  margin: auto;
+}
+
+#score-submit-form {
+  text-align: center;
+  width: 50%;
+  margin: auto;
+}
+
+tr > td {
+  padding-bottom: 1em;
+}
+
+td {
+  color: #32A956;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#top-scores-title {
+  width: 50%;
+  margin: auto;
+}
+
 h1 {
   font-family: 'Press Start 2P', cursive;
   color: #32A956;
@@ -41,18 +78,9 @@ h2 {
 }
 
 #gamestats {
-  width: 1200px;
+  padding-top: 1.5em;
+  width: 50%;
   margin: auto;
+  display: flex;
 }
 
-#score {
-  width: fit-content;
-  float: left;
-  display: inline;
-}
-
-#level {
-  width: fit-content;
-  display: inline;
-  float: right;
-}

@@ -17,7 +17,14 @@
   <h1 id="title">Demo Lab</h1>
   <h2>Welcome! Please sit tight, more interesting content coming to this page. In the meantime, there's always brickbreaker.</h4>
 
-	<canvas id="gameScreen" width="1200" height="800"></canvas>
+    <div id="game-and-score">
+      <canvas id="gameScreen" width="1200" height="800"></canvas>
+      <div id="top-scores">
+        <h2 id="top-scores-title">Global Top Scores</h2>
+        <table id="score-table">
+        </table>
+      </div>
+    </div>
 
   <div id="gamestats">
     <h1 id="score">Score: 0</h1>
@@ -25,6 +32,7 @@
   </div>
   
 	<script type="module" src="src/index.js"></script>
+  <script src='src/score_handler.js'></script>
 </body>
 
 </html>
